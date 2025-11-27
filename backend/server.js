@@ -1,15 +1,21 @@
 const express = require("express");
-//const cors = require("cors");
+const cors = require("cors");
 
 const app = express();
 
-// parse requests of content-type - application/json
-app.use(express.json());
+// Enable CORS for your Angular app
+app.use(cors({
+  origin: "http://13.203.160.15:8081",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type"]
+}));
 
-// parse requests of content-type - application/x-www-form-urlencoded
+// parse requests
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
+
 db.mongoose
   .connect(db.url, {
     useNewUrlParser: true,
@@ -23,15 +29,17 @@ db.mongoose
     process.exit();
   });
 
-// simple route
+// simple test route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Test application." });
 });
 
-require("./app/routes/turorial.routes")(app);
+// Make sure filename is correct: tutorial.routes.js
+require("./app/routes/tutorial.routes")(app);
 
-// set port, listen for requests
+// port
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
