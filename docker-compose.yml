@@ -13,7 +13,7 @@ services:
     container_name: backend
     restart: always
     ports:
-      - "8080:8080"
+      - "8080"   # <-- FIXED
     depends_on:
       - mongo
 
@@ -22,6 +22,7 @@ services:
     container_name: frontend
     restart: always
     ports:
-      - "8081:80"
+      - "80:80"
     depends_on:
       - backend
+
