@@ -87,6 +87,9 @@ docker-compose up -d
 
 ---
 
+## Nginx Reverse Proxy Configuration
+ Located inside frontend/nginx.conf
+
 ## Screenshorts
 
 ## Dockerhub 
