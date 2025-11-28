@@ -65,5 +65,27 @@ pipeline {
                 """
             }
         }
+
+        stage('Commit & Push Updated File to GitHub') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'github-key',
+                        usernameVariable: 'GH_USER',
+                        passwordVariable: 'GH_TOKEN'
+                    )
+                ]) {
+                    sh """
+                    git config user.email "jenkins@example.com"
+                    git config user.name "Jenkins CI"
+
+                    git add docker-compose.yml
+                    git commit -m "Update docker images to tag ${BUILD_NUMBER} [skip ci]" || true
+
+                    git push https://${GH_USER}:${GH_TOKEN}@github.com/ayubazmi/MEAN-DD.git main
+                    """
+                }
+            }
+        }
     }
 }
