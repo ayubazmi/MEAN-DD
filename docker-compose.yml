@@ -9,7 +9,7 @@ services:
       - "27017:27017"
 
   backend:
-    image: ayubazmi/mean-dd_backend:67
+    image: ayubazmi/mean-dd_backend:3
     container_name: backend
     restart: always
     ports:
@@ -18,7 +18,7 @@ services:
       - mongo
 
   frontend:
-    image: ayubazmi/mean-dd_frontend:67
+    image: ayubazmi/mean-dd_frontend:3
     container_name: frontend
     restart: always
     ports:
