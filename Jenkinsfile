@@ -19,23 +19,33 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh "docker build -t ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER} ./frontend"
-                sh "docker build -t ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER} ./backend"
+                sh """
+                docker build -t ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER} ./frontend
+                docker build -t ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER} ./backend
+                """
             }
         }
 
         stage('Login to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                    sh "echo $PASS | docker login -u $USER --password-stdin"
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-cred',
+                        usernameVariable: 'USER',
+                        passwordVariable: 'PASS'
+                    )
+                ]) {
+                    sh 'echo $PASS | docker login -u "$USER" --password-stdin'
                 }
             }
         }
 
         stage('Push Images') {
             steps {
-                sh "docker push ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}"
-                sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}"
+                sh """
+                docker push ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}
+                docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}
+                """
             }
         }
 
@@ -45,21 +55,35 @@ pipeline {
                     sh """
                     echo "Updating docker-compose image versions..."
 
-                    # FIXED sed (works 100% no matter indentation)
                     sed -i "s|image:[[:space:]]*${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
                     sed -i "s|image:[[:space:]]*${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
 
                     echo "Pulling latest images..."
                     docker-compose pull
 
-                    echo "Force removing old containers..."
-                    docker rm -f mongo || true
-                    docker rm -f backend || true
-                    docker rm -f frontend || true
+                    echo "Stopping & removing old containers..."
+                    docker rm -f mongo backend frontend || true
 
-                    echo "Restarting containers..."
+                    echo "Starting updated containers..."
                     docker-compose down --remove-orphans
                     docker-compose up -d
+                    """
+                }
+            }
+        }
+
+        /* ★ NEW STAGE: Commit Updated docker-compose.yml to GitHub */
+        stage('Commit & Push Updated File to GitHub') {
+            steps {
+                withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+                    sh """
+                    git config user.email "jenkins@example.com"
+                    git config user.name "Jenkins CI"
+
+                    git add docker-compose.yml
+                    git commit -m "Update docker images to tag ${BUILD_NUMBER}" || true
+
+                    git push https://${GITHUB_TOKEN}@github.com/ayubazmi/MEAN-DD.git main
                     """
                 }
             }
