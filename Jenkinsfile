@@ -7,10 +7,6 @@ pipeline {
         BACKEND_IMAGE  = "mean-dd_backend"
     }
 
-    triggers {
-        githubPush()
-    }
-
     stages {
 
         stage('Checkout') {
@@ -55,17 +51,28 @@ pipeline {
 
         stage('Deploy Locally') {
             steps {
-                sh """
-                sed -i "s|${FRONTEND_IMAGE}:.*|${FRONTEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
-                sed -i "s|${BACKEND_IMAGE}:.*|${BACKEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
+                script {
+                    sh """
+                    echo "Updating docker-compose image versions..."
 
-                docker-compose pull
-                docker-compose down --remove-orphans
-                docker-compose up -d
-                """
+                    sed -i "s|image:[[:space:]]*${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
+                    sed -i "s|image:[[:space:]]*${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
+
+                    echo "Pulling latest images..."
+                    docker-compose pull
+
+                    echo "Stopping & removing old containers..."
+                    docker rm -f mongo backend frontend || true
+
+                    echo "Starting updated containers..."
+                    docker-compose down --remove-orphans
+                    docker-compose up -d
+                    """
+                }
             }
         }
 
+        /* ✅ FINAL FIXED STAGE: Commit Updated docker-compose.yml to GitHub */
         stage('Commit & Push Updated File to GitHub') {
             steps {
                 withCredentials([
@@ -80,7 +87,7 @@ pipeline {
                     git config user.name "Jenkins CI"
 
                     git add docker-compose.yml
-                    git commit -m "Update docker images to tag ${BUILD_NUMBER} [skip ci]" || true
+                    git commit -m "Update docker images to tag ${BUILD_NUMBER}" || true
 
                     git push https://${GH_USER}:${GH_TOKEN}@github.com/ayubazmi/MEAN-DD.git main
                     """
