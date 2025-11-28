@@ -92,7 +92,12 @@ docker-compose up -d
 ## Dockerhub 
 <img width="906" height="330" alt="docker images" src="https://github.com/user-attachments/assets/2a263527-42ca-4962-b682-528df2ebf24d" />
 
+## App images 
+1)  <img width="868" height="368" alt="Screenshot_14" src="https://github.com/user-attachments/assets/c526cdb6-f8b0-4860-8d23-352c021f20d8" />
 
+2)  <img width="773" height="322" alt="Screenshot_15" src="https://github.com/user-attachments/assets/290bf63a-6625-48e2-b52a-ee51e31b7b63" />
+
+3)   <img width="847" height="364" alt="Screenshot_16" src="https://github.com/user-attachments/assets/a216a3f2-0993-4b79-861d-7cddbe6c2fe4" />
 
                                         END OF Deployment of Cloud
 ==========================================================================================================================================================================================================================================================
