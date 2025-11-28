@@ -44,8 +44,12 @@ pipeline {
                 script {
                     sh """
                     echo "Updating docker-compose image versions..."
-                    sed -i 's|${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g' docker-compose.yml
-                    sed -i 's|${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g' docker-compose.yml
+
+                    # Correct sed commands that match full line like:
+                    # image: ayubazmi/mean-dd_frontend:latest
+                    # image: ayubazmi/mean-dd_backend:latest
+                    sed -i "s|image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
+                    sed -i "s|image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
 
                     echo "Pulling latest images..."
                     docker-compose pull
