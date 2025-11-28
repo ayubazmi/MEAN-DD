@@ -31,11 +31,43 @@ GitHub → Jenkins CI/CD → Docker Hub → Ubuntu VM → Docker Compose → MEA
 
   mongo – MongoDB official image
 
-## Install Docker & Docker Compose
+## CI/CD Pipeline (Jenkins)
+  The Jenkins pipeline includes:
+
+  Checkout from GitHub
+
+  Build frontend & backend Docker images
+
+  Push images to Docker Hub
+
+  Update docker-compose.yml with new tags
+
+  Pull and restart application containers
+
+  Commit updated files back to GitHub
+
+## Trigger
+
+  Pipeline triggers automatically when new code is pushed to GitHub, or manually from Jenkins dashboard.  
+
+## How to Deploy on Ubuntu VM
+## Install Docker & Docker Compose & Jenkins 
 ```bash
 sudo apt update
 sudo apt install docker.io -y
 sudo apt install docker-compose -y
+sudo apt install openjdk-17-jre-headless -y
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt update
+sudo apt install jenkins -y
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+sudo systemctl status jenkins
+
 ```
 
 ## Clone the repository
