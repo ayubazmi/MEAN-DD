@@ -25,9 +25,14 @@ GitHub → Jenkins CI/CD → Docker Hub → Ubuntu VM → Docker Compose → MEA
 
 
 ## Install Docker & Docker Compose
-sudo apt update
-sudo apt install docker.io -y
-sudo apt install docker-compose -y
+'''bash
+  sudo apt update
+  sudo apt install docker.io -y
+  sudo apt install docker-compose -y
+
+'''bash
+
+
 ---
 
 
