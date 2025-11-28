@@ -9,20 +9,19 @@ services:
       - "27017:27017"
 
   backend:
-    build: ./backend
+    image: ayubazmi/mean-dd_backend:latest
     container_name: backend
     restart: always
     ports:
-      - "8080"   # <-- FIXED
+      - "8080"
     depends_on:
       - mongo
 
   frontend:
-    build: ./frontend
+    image: ayubazmi/mean-dd_frontend:latest
     container_name: frontend
     restart: always
     ports:
       - "80:80"
     depends_on:
       - backend
-
