@@ -72,7 +72,7 @@ Pull and restart application containers
 
 Commit updated files back to GitHub
 
-
+---
 Screenshort 
 
 ## 📸 Screenshots
@@ -91,7 +91,7 @@ Screenshort
 #### 3️⃣ API Working
 ![Screenshot 3](https://github.com/user-attachments/assets/9faaad1e-e722-4883-a7d0-91c4f3fc1f0e)
 
-
+---
 
 
                                         END OF Deployment of Cloud
