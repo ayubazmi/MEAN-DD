@@ -134,7 +134,7 @@ You can update the MongoDB credentials by modifying the `db.config.js` file loca
 
 Run `node server.js`
 
-### Angular Client
+### Angular Client.
 
 cd frontend
 
