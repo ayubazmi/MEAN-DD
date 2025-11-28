@@ -57,11 +57,13 @@ sudo apt update
 sudo apt install docker.io -y
 sudo apt install docker-compose -y
 sudo apt install openjdk-17-jre-headless -y
-curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
   /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
   https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
+
 sudo apt update
 sudo apt install jenkins -y
 sudo systemctl start jenkins
