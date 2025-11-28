@@ -23,6 +23,13 @@ GitHub → Jenkins CI/CD → Docker Hub → Ubuntu VM → Docker Compose → MEA
 
 ---
 
+## Services inside docker-compose.yml:
+
+  frontend – Angular build served via Nginx
+
+  backend – Node/Express server
+
+  mongo – MongoDB official image
 
 ## Install Docker & Docker Compose
 ```bash
@@ -31,7 +38,20 @@ sudo apt install docker.io -y
 sudo apt install docker-compose -y
 ```
 
+## Clone the repository
+```bash
+git clone https://github.com/YOUR-USERNAME/MEAN-DD.git
+cd MEAN-DD
+```
 
+## Run the stack
+```bash
+docker-compose up -d
+```
+## Application will be available at:
+```bash
+👉 http://YOUR-SERVER-IP:80
+```
 
 ---
 
