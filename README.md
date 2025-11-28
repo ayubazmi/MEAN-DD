@@ -1,7 +1,7 @@
 ==============================================================================================================================
 ==============================================================================================================================
 
-# MEAN-DD Project – Dockerized MEAN Stack with CI/CD (Jenkins) & Nginx Reverse Proxy.
+# MEAN-DD Project – Dockerized MEAN Stack with CI/CD (Jenkins) & Nginx Reverse Proxy..
 
 This project contains a complete MEAN stack (MongoDB, Express.js, Angular, Node.js) fully Dockerized and deployed using Docker Compose.  
 It includes an automated CI/CD pipeline using Jenkins that:
