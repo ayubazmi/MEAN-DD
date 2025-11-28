@@ -45,9 +45,7 @@ pipeline {
                     sh """
                     echo "Updating docker-compose image versions..."
 
-                    # Correct sed commands that match full line like:
-                    # image: ayubazmi/mean-dd_frontend:latest
-                    # image: ayubazmi/mean-dd_backend:latest
+                    # Update ONLY lines that contain 'image: ayubazmi/...'
                     sed -i "s|image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
                     sed -i "s|image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
 
