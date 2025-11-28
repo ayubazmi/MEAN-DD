@@ -102,6 +102,15 @@ docker-compose up -d
 
 3)   <img width="847" height="364" alt="Screenshot_16" src="https://github.com/user-attachments/assets/a216a3f2-0993-4b79-861d-7cddbe6c2fe4" />
 
+
+## Build Screen 
+1)  <img width="903" height="466" alt="Screenshot_18" src="https://github.com/user-attachments/assets/1fd4f4b8-f360-4875-b498-31e6513baf62" />
+
+2) <img width="924" height="431" alt="Screenshot_19" src="https://github.com/user-attachments/assets/1ab25b49-409c-48ed-88d4-b7800b74b558" />
+
+3) <img width="768" height="416" alt="Screenshot_20" src="https://github.com/user-attachments/assets/8c2cc3c3-6f27-4966-a62b-124f06f72303" />
+
+
                                         END OF Deployment of Cloud
 ==========================================================================================================================================================================================================================================================
 
