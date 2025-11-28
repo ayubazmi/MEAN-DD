@@ -19,8 +19,15 @@ Nginx is used as a reverse proxy to expose the entire application on port **80**
 ##  Project Architecture
 GitHub → Jenkins CI/CD → Docker Hub → Ubuntu VM → Docker Compose → MEAN App (Frontend + Backend + MongoDB)
 
+---
+
+---
 
 
+## Install Docker & Docker Compose
+sudo apt update
+sudo apt install docker.io -y
+sudo apt install docker-compose -y
 ---
 
 
