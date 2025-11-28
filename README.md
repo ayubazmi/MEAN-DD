@@ -74,15 +74,22 @@ Commit updated files back to GitHub
 
 Screenshort 
 
-Image on dockerhub  <img width="906" height="330" alt="docker images" src="https://github.com/user-attachments/assets/845c17d8-ad9f-4d50-a95b-c48b51b97e8a" />
+## 📸 Screenshots
 
+### 🐳 Docker Hub Images
+![Docker Images](https://github.com/user-attachments/assets/845c17d8-ad9f-4d50-a95b-c48b51b97e8a)
 
-App running  1)  <img width="868" height="368" alt="Screenshot_14" src="https://github.com/user-attachments/assets/28c9e184-4a17-476a-935a-df7be8bf0304" />
+### 🌐 Application Running
 
-2) <img width="773" height="322" alt="Screenshot_15" src="https://github.com/user-attachments/assets/f1fc510f-b251-4856-9028-8f01300647a2" />
+#### 1️⃣ Home UI
+![Screenshot 1](https://github.com/user-attachments/assets/28c9e184-4a17-476a-935a-df7be8bf0304)
 
-3) <img width="847" height="364" alt="Screenshot_16" src="https://github.com/user-attachments/assets/9faaad1e-e722-4883-a7d0-91c4f3fc1f0e" />
- 
+#### 2️⃣ Feature Screen
+![Screenshot 2](https://github.com/user-attachments/assets/f1fc510f-b251-4856-9028-8f01300647a2)
+
+#### 3️⃣ API Working
+![Screenshot 3](https://github.com/user-attachments/assets/9faaad1e-e722-4883-a7d0-91c4f3fc1f0e)
+
 
 
 
@@ -90,8 +97,7 @@ App running  1)  <img width="868" height="368" alt="Screenshot_14" src="https://
 ==========================================================================================================================================================================================================================================================
 
 
-                                              To Run locally <img width="225" height="225" alt="image" src="https://github.com/user-attachments/assets/28fe45f7-1bb9-42e2-be5b-3a502f4549d0" />
-
+                                              To Run locally 
 
 
 In this DevOps task, you need to build and deploy a full-stack CRUD application using the MEAN stack (MongoDB, Express, Angular 15, and Node.js). The backend will be developed with Node.js and Express to provide REST APIs, connecting to a MongoDB database. The frontend will be an Angular application utilizing HTTPClient for communication.  
