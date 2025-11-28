@@ -7,6 +7,10 @@ pipeline {
         BACKEND_IMAGE  = "mean-dd_backend"
     }
 
+    triggers {
+        githubPush()
+    }
+
     stages {
 
         stage('Checkout') {
@@ -51,47 +55,14 @@ pipeline {
 
         stage('Deploy Locally') {
             steps {
-                script {
-                    sh """
-                    echo "Updating docker-compose image versions..."
+                sh """
+                sed -i "s|${FRONTEND_IMAGE}:.*|${FRONTEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
+                sed -i "s|${BACKEND_IMAGE}:.*|${BACKEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
 
-                    sed -i "s|image:[[:space:]]*${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
-                    sed -i "s|image:[[:space:]]*${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
-
-                    echo "Pulling latest images..."
-                    docker-compose pull
-
-                    echo "Stopping & removing old containers..."
-                    docker rm -f mongo backend frontend || true
-
-                    echo "Starting updated containers..."
-                    docker-compose down --remove-orphans
-                    docker-compose up -d
-                    """
-                }
-            }
-        }
-
-        
-        stage('Commit & Push Updated File to GitHub') {
-            steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'github-key',
-                        usernameVariable: 'GH_USER',
-                        passwordVariable: 'GH_TOKEN'
-                    )
-                ]) {
-                    sh """
-                    git config user.email "jenkins@example.com"
-                    git config user.name "Jenkins CI"
-
-                    git add docker-compose.yml
-                    git commit -m "Update docker images to tag ${BUILD_NUMBER}" || true
-
-                    git push https://${GH_USER}:${GH_TOKEN}@github.com/ayubazmi/MEAN-DD.git main
-                    """
-                }
+                docker-compose pull
+                docker-compose down --remove-orphans
+                docker-compose up -d
+                """
             }
         }
     }
