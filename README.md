@@ -28,7 +28,7 @@ GitHub → Jenkins CI/CD → Docker Hub → Ubuntu VM → Docker Compose → MEA
 ### Run the entire application:
   Prerequisits
   Install Docker & Docker Compose
-'''bash
+
 sudo apt update
 sudo apt install docker.io -y
 sudo apt install docker-compose -y
