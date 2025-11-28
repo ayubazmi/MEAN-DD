@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_USER = "ayubazmi"       // your dockerhub username
+        DOCKERHUB_USER = "ayubazmi"
         FRONTEND_IMAGE = "mean-dd_frontend"
-        BACKEND_IMAGE = "mean-dd_backend"
+        BACKEND_IMAGE  = "mean-dd_backend"
     }
 
     stages {
@@ -23,7 +23,7 @@ pipeline {
                     echo "Building Frontend Image"
                     sh "docker build -t ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER} ./frontend"
 
-                    echo "Building Backend Image"
+                    echo 'Building Backend Image'
                     sh "docker build -t ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER} ./backend"
                 }
             }
@@ -39,26 +39,26 @@ pipeline {
 
         stage('Push Images to Docker Hub') {
             steps {
-                script {
-                    sh "docker push ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}"
-                    sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}"
-                }
+                sh "docker push ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}"
+                sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}"
             }
         }
 
-        stage('Deploy to Server via SSH') {
+        stage('Deploy Locally') {
             steps {
-                sshagent (credentials: ['ec2-ssh']) {
+                script {
+                    echo "Updating docker-compose.yml with latest tags..."
+
                     sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@3.109.209.6 '
-                        cd MEAN-DD &&
-                        docker pull ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER} &&
-                        docker pull ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER} &&
-                        docker compose down &&
-                        sed -i "s|${DOCKERHUB_USER}/mean-dd_frontend.*|${DOCKERHUB_USER}/mean-dd_frontend:${BUILD_NUMBER}|g" docker-compose.yml &&
-                        sed -i "s|${DOCKERHUB_USER}/mean-dd_backend.*|${DOCKERHUB_USER}/mean-dd_backend:${BUILD_NUMBER}|g" docker-compose.yml &&
-                        docker compose up -d
-                    '
+                    sed -i 's|${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g' docker-compose.yml
+                    sed -i 's|${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g' docker-compose.yml
+
+                    echo 'Pulling latest images...'
+                    docker compose pull
+
+                    echo 'Restarting services...'
+                    docker compose down
+                    docker compose up -d
                     """
                 }
             }
