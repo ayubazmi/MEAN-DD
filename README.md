@@ -41,6 +41,7 @@ cd MEAN-DD
 Run the stack
 docker-compose up -d
 
+'''bash
 
 Application will be available at:
 
