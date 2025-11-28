@@ -19,13 +19,8 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                script {
-                    echo "Building Frontend Image"
-                    sh "docker build -t ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER} ./frontend"
-
-                    echo 'Building Backend Image'
-                    sh "docker build -t ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER} ./backend"
-                }
+                sh "docker build -t ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER} ./frontend"
+                sh "docker build -t ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER} ./backend"
             }
         }
 
@@ -37,7 +32,7 @@ pipeline {
             }
         }
 
-        stage('Push Images to Docker Hub') {
+        stage('Push Images') {
             steps {
                 sh "docker push ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}"
                 sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}"
@@ -47,18 +42,16 @@ pipeline {
         stage('Deploy Locally') {
             steps {
                 script {
-                    echo "Updating docker-compose.yml with latest tags..."
-
                     sh """
                     sed -i 's|${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g' docker-compose.yml
                     sed -i 's|${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g' docker-compose.yml
 
-                    echo 'Pulling latest images...'
-                    docker compose pull
+                    echo "Pulling latest images..."
+                    docker-compose pull
 
-                    echo 'Restarting services...'
-                    docker compose down
-                    docker compose up -d
+                    echo "Restarting containers..."
+                    docker-compose down
+                    docker-compose up -d --remove-orphans
                     """
                 }
             }
