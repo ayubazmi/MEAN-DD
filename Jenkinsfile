@@ -45,9 +45,9 @@ pipeline {
                     sh """
                     echo "Updating docker-compose image versions..."
 
-                    # Update ONLY lines that contain 'image: ayubazmi/...'
-                    sed -i "s|image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
-                    sed -i "s|image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
+                    # Match lines even with indentation
+                    sed -i "s|^[[:space:]]*image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|    image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
+                    sed -i "s|^[[:space:]]*image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|    image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
 
                     echo "Pulling latest images..."
                     docker-compose pull
