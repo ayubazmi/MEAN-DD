@@ -72,10 +72,16 @@ pipeline {
             }
         }
 
-        /* ★ NEW STAGE: Commit Updated docker-compose.yml to GitHub */
+        /* ✅ FINAL FIXED STAGE: Commit Updated docker-compose.yml to GitHub */
         stage('Commit & Push Updated File to GitHub') {
             steps {
-                withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'github-key',
+                        usernameVariable: 'GH_USER',
+                        passwordVariable: 'GH_TOKEN'
+                    )
+                ]) {
                     sh """
                     git config user.email "jenkins@example.com"
                     git config user.name "Jenkins CI"
@@ -83,7 +89,7 @@ pipeline {
                     git add docker-compose.yml
                     git commit -m "Update docker images to tag ${BUILD_NUMBER}" || true
 
-                    git push https://${GITHUB_TOKEN}@github.com/ayubazmi/MEAN-DD.git main
+                    git push https://${GH_USER}:${GH_TOKEN}@github.com/ayubazmi/MEAN-DD.git main
                     """
                 }
             }
