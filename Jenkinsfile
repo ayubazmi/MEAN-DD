@@ -45,9 +45,9 @@ pipeline {
                     sh """
                     echo "Updating docker-compose image versions..."
 
-                    # Match lines even with indentation
-                    sed -i "s|^[[:space:]]*image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|    image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
-                    sed -i "s|^[[:space:]]*image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|    image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
+                    # FIXED sed (works 100% no matter indentation)
+                    sed -i "s|image:[[:space:]]*${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
+                    sed -i "s|image:[[:space:]]*${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|image: ${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g" docker-compose.yml
 
                     echo "Pulling latest images..."
                     docker-compose pull
