@@ -43,15 +43,21 @@ pipeline {
             steps {
                 script {
                     sh """
+                    echo "Updating docker-compose image versions..."
                     sed -i 's|${DOCKERHUB_USER}/${FRONTEND_IMAGE}:.*|${DOCKERHUB_USER}/${FRONTEND_IMAGE}:${BUILD_NUMBER}|g' docker-compose.yml
                     sed -i 's|${DOCKERHUB_USER}/${BACKEND_IMAGE}:.*|${DOCKERHUB_USER}/${BACKEND_IMAGE}:${BUILD_NUMBER}|g' docker-compose.yml
 
                     echo "Pulling latest images..."
                     docker-compose pull
 
+                    echo "Force removing old containers..."
+                    docker rm -f mongo || true
+                    docker rm -f backend || true
+                    docker rm -f frontend || true
+
                     echo "Restarting containers..."
-                    docker-compose down
-                    docker-compose up -d --remove-orphans
+                    docker-compose down --remove-orphans
+                    docker-compose up -d
                     """
                 }
             }
