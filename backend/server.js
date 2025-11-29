@@ -5,7 +5,7 @@ const app = express();
 
 // Enable CORS for your Angular app
 app.use(cors({
-  origin: "http://13.203.160.15:8081",
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type"]
 }));
