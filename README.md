@@ -12,7 +12,7 @@ It includes an automated CI/CD pipeline using Jenkins that:
 - Automatically redeploys the application on the server
 - Commits updated versions back to GitHub
 
-Nginx is used as a reverse proxy to expose the entire application on port **80**..
+Nginx is used as a reverse proxy to expose the entire application on port **80**..!
 
 ---
 
